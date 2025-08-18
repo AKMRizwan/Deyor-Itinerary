@@ -1,0 +1,404 @@
+/* ===========================
+   style.css — Deyor Itinerary
+   Matches the HTML structure provided
+   =========================== */
+
+/* Reset / Box model */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* Base typography + tokens (kept from original) */
+:root{
+  --brand:#0ea5e9;         /* sky-500 */
+  --brand-600:#0284c7;     /* sky-600 */
+  --ink:#0f172a;           /* slate-900 */
+  --muted:#334155;         /* slate-700 */
+  --card:#ffffff;
+  --chip:#e2e8f0;          /* slate-200 */
+  --ok:#16a34a;            /* green-600 */
+  --bad:#dc2626;           /* red-600 */
+  --shadow:0 10px 30px rgba(2,132,199,.15);
+  --radius:18px;
+  --space:clamp(16px,2vw,24px);
+  --w:1100px;
+}
+
+body{
+  margin:0;
+  font-family:"Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  color:var(--ink);
+  background:#f8fafc;
+  line-height:1.6;
+}
+
+/* Container */
+.container{
+  max-width:var(--w);
+  margin:0 auto;
+  padding: clamp(16px,3vw,28px);
+}
+
+/* Header / nav */
+header.site {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #ffffff;
+  backdrop-filter: saturate(180%) blur(10px);
+  border-bottom: 1px solid var(--chip);
+  overflow: hidden;       /* Ensures nothing spills out */
+  
+}
+
+.container.nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: space-between;
+  
+}
+
+/* Brand container */
+.brand {
+  display: flex;
+  align-items: center;
+  height: 100%; 
+  
+}
+
+.brand .logo {
+  height: 100%;           /* Logo fills header height */
+  width: auto;            /* Keeps aspect ratio */
+  max-height: 60px;       /* Ensure it can't overflow header */
+  overflow: hidden; 
+  display: inline-block;
+  vertical-align: middle;
+  
+
+}
+
+
+/* Primary nav */
+nav[aria-label="Primary"] ul {
+  display: flex;
+  gap: 12px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-wrap: wrap;
+  
+}
+
+nav[aria-label="Primary"] a {
+  display: inline-block;
+  padding: 10px 12px;
+  border-radius: 999px;
+  background: #eef2f7;
+  color: var(--brand-600);
+  text-decoration: none;
+  font-weight: 600;
+  /* box-shadow:var(--shadow); */
+ 
+
+}
+
+nav[aria-label="Primary"] a:hover {
+  background: var(--chip);
+  
+}
+
+
+
+/* Skip link */
+.skip{
+  position:absolute;
+  left:-9999px;
+  top:auto;
+}
+.skip:focus{
+  left:16px;
+  top:12px;
+  background:#fff;
+  padding:8px 12px;
+  border-radius:8px;
+  box-shadow:var(--shadow);
+}
+
+.hero-box {
+  padding: 24px;
+}
+
+.hero-box .wrap {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 1.5fr 1fr;
+  align-items: center;
+}
+
+.hero-box img {
+  width: 100%;
+  border-radius: 12px;
+  display: block;
+}
+
+.hero-box figcaption {
+  font-size: .9rem;
+  color: #475569;
+  padding: 10px 0 0;
+}
+@media (max-width: 900px) {
+  .hero-box .wrap { grid-template-columns: 1fr; }
+}
+
+
+/* Reusable card, grid */
+.card{
+  background:var(--card);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  border:1px solid var(--chip);
+  margin:20px 0;
+}
+.card:hover{ transform: translateY(-6px); box-shadow: 0 14px 40px rgba(2,132,199,0.12); }
+
+/* Summary grid */
+.summary{
+  display:grid;
+  gap:var(--space);
+  grid-template-columns:repeat(6, minmax(0,1fr));
+}
+.summary .item{ padding:18px; text-align:center; }
+.summary .label{ font-size:.85rem; color:var(--muted); }
+.summary .value{ font-weight:700; font-size:1.05rem; }
+@media (max-width:900px){ .summary{ grid-template-columns:repeat(3, minmax(0,1fr)); } }
+@media (max-width:520px){ .summary{ grid-template-columns:repeat(2, minmax(0,1fr)); } }
+
+/* Generic grid helpers used in HTML */
+.grid{ display:grid; gap:var(--space); }
+.grid.cols-2{ grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.grid.cols-3{ grid-template-columns: repeat(3, minmax(0,1fr)); }
+.grid.cols-4{ grid-template-columns: repeat(4, minmax(0,1fr)); }
+
+@media (max-width:900px){
+  .hero .wrap{ grid-template-columns: 1fr; }
+  .grid.cols-4{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width:640px){
+  .grid.cols-3, .grid.cols-2{ grid-template-columns: 1fr; }
+}
+
+/* ---- STAYS specific (matches your structure) ---- */
+/* the HTML articles currently include inline style="padding:18px" — we add safe rules so visuals align */
+#stays h2{ margin-top:4px; margin-bottom:8px; text-align:left; }
+#stays .grid{ gap:18px; }
+#stays .card{ overflow:hidden; }
+#stays .card img.stay-img{
+  width:100%;
+  height:200px;       /* consistent visual height */
+  object-fit:cover;
+  display:block;
+  border-radius:10px; /* gentle rounding inside card padding */
+  margin-bottom:12px;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+/* When article uses inline padding, image will be inset; keep image rounding moderate */
+#stays .card h3{
+  margin:8px 0 6px;
+  color:var(--brand-600);
+  font-size:1.05rem;
+}
+#stays .card p{
+  margin:4px 0;
+  color:var(--muted);
+  font-size:0.95rem;
+}
+
+/* ---- Overview table ---- */
+.day-plan {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  font-size: 0.95rem;
+  box-shadow:var(--shadow);
+  
+}
+
+.day-plan thead th {
+  background: #0ea5e9; /* brand color */
+  color: #fff;
+  text-align: left;
+  padding: 14px 16px;
+  font-weight: 600;
+}
+
+.day-plan tbody td {
+  padding: 12px 16px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.day-plan tbody tr:nth-child(even) {
+  background: #f9fafb; /* alternate row */
+}
+
+.day-plan tbody tr:hover {
+  background: #e0f2fe; /* hover highlight */
+  transition: background 0.2s ease-in-out;
+}
+
+.day-plan td strong {
+  color: #0f172a;
+}
+
+
+/* ---- Details/summary accordions (itinerary) ---- */
+details{
+  background:#fff;
+  border:1px solid var(--chip);
+  border-radius:var(--radius);
+  padding:16px 18px;
+  box-shadow:var(--shadow);
+  margin-bottom:var(--space);
+}
+ .itinerary-img {
+  width: 100%;
+  max-width: 100%;
+  height: 180px; /* or another value to fit your design */
+  object-fit: cover;
+  display: block;
+  margin: 16px 0;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+@media (max-width:600px){
+  .itinerary-img {
+    height: 140px; /* shorter image for mobile */
+  }
+}
+summary{
+  cursor:pointer;
+  list-style:none;
+  font-weight:700;
+  outline:none;
+}
+summary::-webkit-details-marker{ display:none; }
+summary::after{ content:"+"; float:right; color:var(--brand-600); font-weight:700; }
+details[open] summary::after{ content:"\2212"; } /* – */
+
+/* Keep paragraph spacing inside details readable */
+details p{ margin:.6em 0 0; color:var(--muted); line-height:1.65; }
+
+/* ---- small UI bits ---- */
+.badges{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+.badge{ display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; background:#f1f5f9; font-weight:600; color:#0f172a; }
+.badge strong{ color:var(--ink); }
+
+/* Accessibility tune-ups */
+a:focus, button:focus, summary:focus{ outline:3px solid rgba(2,132,199,0.12); outline-offset:3px; border-radius:6px; }
+
+/* ---- Footer ---- */
+footer {
+  border-top: 1px solid var(--chip);
+  background: #e8f2fa;
+  color: #000000;
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+/* ---- Print ---- */
+@media print {
+  header.site,
+  nav[aria-label="Primary"],
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    background: #fff; 
+    color: #000;
+  }
+  
+  .card,
+  table,
+  details {
+    box-shadow: none !important;
+    border: none !important;
+  }
+  
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    color: #fff;
+  }
+}
+
+/* ---- Small responsive refinements ---- */
+@media (max-width: 520px) {
+  .hero .wrap {
+    gap: 12px;
+  }
+  
+  .card {
+    margin: 14px 0;
+  }
+  
+  #stays .card img.stay-img {
+    height: 160px;
+  }
+}
+
+/* ---- Social footer ---- */
+footer {
+  border-top: 1px solid var(--chip);
+  background: #f1f8fd;
+  color: #475569;
+  padding: 12px 0;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.social-footer {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 12px 0;
+  margin: 0;
+}
+
+.social-icon {
+  background: #fff;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.2s, transform 0.2s;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+  text-decoration: none;
+  color: #ef4444;
+  font-size: 1.2em;
+}
+
+footer p {
+  margin: 8px 0;
+}
+
+
+.social-icon:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  transform: translateY(-4px) scale(1.1);
+}
